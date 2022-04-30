@@ -1,0 +1,16 @@
+[
+{
+  "modid": "${modid}",
+  "name": "Fun World Gen",
+  "description": "",
+  "version": "${version}",
+  "mcversion": "${minecraft_version}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["ted80"],
+  "credits": "",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
