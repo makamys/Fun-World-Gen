@@ -1,7 +1,10 @@
 package fwg.deco;
 
+import static net.minecraftforge.common.ChestGenHooks.DUNGEON_CHEST;
+
 import java.util.Random;
 
+import fwg.config.ConfigFWG;
 import fwg.data.DungeonLoot;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -10,6 +13,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.tileentity.TileEntityMobSpawner;
+import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
 import net.minecraftforge.common.ChestGenHooks;
@@ -170,30 +174,39 @@ public class DecoDungeons extends WorldGenerator
 				par1World.setBlock(par3, par4 + 2, par5, Blocks.chest);
 				TileEntityChest var16 = (TileEntityChest)par1World.getTileEntity(par3, par4 + 2, par5);
 				
-				if(randomChest == true)
+				if(ConfigFWG.enableCustomDungeonLoot)
 				{
-					for (int var17 = 0; var17 < 20; ++var17)
+					if(randomChest == true)
 					{
-						ItemStack var18 = this.pickCheckLootItem(par2Random, var17);
-
-						if (var18 != null)
+						for (int var17 = 0; var17 < 20; ++var17)
 						{
-							var16.setInventorySlotContents(var17, var18);
+							ItemStack var18 = this.pickCheckLootItem(par2Random, var17);
+	
+							if (var18 != null)
+							{
+								var16.setInventorySlotContents(var17, var18);
+							}
 						}
 					}
+					else
+					{
+						for (int var17 = 0; var17 < 14; ++var17)
+						{
+							ItemStack var18 = this.pickCheckLootItem(par2Random, 0);
+	
+							if (var18 != null)
+							{
+								var16.setInventorySlotContents(par2Random.nextInt(var16.getSizeInventory()), var18);
+							}
+						}
+					}
+				} else
+				{
+                    if (var16 != null)
+                    {
+                        WeightedRandomChestContent.generateChestContents(par2Random, ChestGenHooks.getItems(DUNGEON_CHEST, par2Random), var16, ChestGenHooks.getCount(DUNGEON_CHEST, par2Random));
+                    }
 				}
-				else
-				{
-					for (int var17 = 0; var17 < 14; ++var17)
-					{
-						ItemStack var18 = this.pickCheckLootItem(par2Random, 0);
-
-						if (var18 != null)
-						{
-							var16.setInventorySlotContents(par2Random.nextInt(var16.getSizeInventory()), var18);
-						}
-					}
-				}	
 			}
 		}
 		else
@@ -318,30 +331,40 @@ public class DecoDungeons extends WorldGenerator
 
 										if (var16 != null)
 										{
-											if(randomChest == true)
+											if(ConfigFWG.enableCustomDungeonLoot)
 											{
-												for (int var17 = 0; var17 < 20; ++var17)
+												if(randomChest == true)
 												{
-													ItemStack var18 = this.pickCheckLootItem(par2Random, var17);
-
-													if (var18 != null)
+													for (int var17 = 0; var17 < 20; ++var17)
 													{
-														var16.setInventorySlotContents(var17, var18);
+														ItemStack var18 = this.pickCheckLootItem(par2Random, var17);
+
+														if (var18 != null)
+														{
+															var16.setInventorySlotContents(var17, var18);
+														}
 													}
 												}
-											}
-											else
-											{
-												for (int var17 = 0; var17 < 14; ++var17)
+												else
 												{
-													ItemStack var18 = this.pickCheckLootItem(par2Random, 0);
-
-													if (var18 != null)
+													for (int var17 = 0; var17 < 14; ++var17)
 													{
-														var16.setInventorySlotContents(par2Random.nextInt(var16.getSizeInventory()), var18);
+														ItemStack var18 = this.pickCheckLootItem(par2Random, 0);
+
+														if (var18 != null)
+														{
+															var16.setInventorySlotContents(par2Random.nextInt(var16.getSizeInventory()), var18);
+														}
 													}
 												}
+											} else
+											{
+												if (var16 != null)
+							                    {
+							                        WeightedRandomChestContent.generateChestContents(par2Random, ChestGenHooks.getItems(DUNGEON_CHEST, par2Random), var16, ChestGenHooks.getCount(DUNGEON_CHEST, par2Random));
+							                    }
 											}
+											
 										}
 
 										break label210;
