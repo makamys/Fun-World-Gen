@@ -57,12 +57,12 @@ public class WorldTypeFWG extends WorldType
 	
     public float getCloudHeight()
     {
-        return GeneratorType.currentGenerator.getCloudHeight();
+        return GeneratorType.currentGenerator != null ? GeneratorType.currentGenerator.getCloudHeight() : 128.0F;
     }
     
     public double getHorizon(World world)
     {
-        return GeneratorType.currentGenerator.getHorizon();
+        return GeneratorType.currentGenerator != null ? GeneratorType.currentGenerator.getHorizon() : 63.0D;
     }
 	
     @SideOnly(Side.CLIENT)
