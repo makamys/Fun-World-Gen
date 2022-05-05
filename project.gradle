@@ -5,3 +5,24 @@ jar {
 
 sourceCompatibility = 1.6
 targetCompatibility = 1.6
+
+
+version = getCommitVersion() + "-unofficial-m"
+
+def getCommitVersion(modVersion){
+	try {
+		def commitHashProc = "git describe --tags --dirty".execute()
+		commitHashProc.waitFor()
+		if(commitHashProc.exitValue() == 0){
+			def commitHash = commitHashProc.text.trim()
+			
+			return commitHash
+		} else {
+			println commitHashProc.err.text
+			throw new Exception("git describe exited with non-zero return value")
+		}
+	} catch(Exception e){
+		println "Failed to get commit version: " + e.getMessage()
+	}
+	return "UNKNOWN" // fallback
+}
