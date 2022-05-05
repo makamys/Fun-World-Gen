@@ -188,6 +188,7 @@ public class ChunkGeneratorSkyDimension implements IChunkProvider
         stoneNoise = field_908_o.generateNoiseOctaves(stoneNoise, i * 16, j * 16, 0.0D, 16, 16, 1, d * 2D, d * 2D, d * 2D);
 
         int k, l, m;
+        final int shift = 64;
         for(k = 0; k < 16; k++)
         {
             for(l = 0; l < 16; l++)
@@ -196,24 +197,23 @@ public class ChunkGeneratorSkyDimension implements IChunkProvider
             	
             	for(m = 0; m < 256; m++)
             	{
-            		if(m < 128)
+            		if(m >= shift && m < shift + 128)
             		{
-            			tempBlocks[(l * 16 + k) * 256 + m + 64] = blocks[(l * 16 + k) * 128 + m];
-                		tempMetadata[(l * 16 + k) * 256 + m + 64] = 0;
+            			tempBlocks[(l * 16 + k) * 256 + m] = blocks[(l * 16 + k) * 128 + m - shift];
             		}
             		else
             		{
             			tempBlocks[m] = Blocks.air;
-                		tempMetadata[(l * 16 + k) * 256 + m] = 0;
             		}
+            		tempMetadata[(l * 16 + k) * 256 + m] = 0;
             	}
             	
             	abiomegenbase[k + l * 16].genTerrainBlocks(worldObj, rand, tempBlocks, tempMetadata, i * 16 + k, j * 16 + l, stoneNoise[l + k * 16]);
             	
             	for(m = 0; m < 128; m++)
             	{
-            		blocks[(l * 16 + k) * 128 + m] = tempBlocks[(l * 16 + k) * 256 + m + 64];
-            		metadata[(l * 16 + k) * 128 + m] = tempMetadata[(l * 16 + k) * 256 + m + 64];
+            		blocks[(l * 16 + k) * 128 + m] = tempBlocks[(l * 16 + k) * 256 + m + shift];
+            		metadata[(l * 16 + k) * 128 + m] = tempMetadata[(l * 16 + k) * 256 + m + shift];
             	}
             }
         }
