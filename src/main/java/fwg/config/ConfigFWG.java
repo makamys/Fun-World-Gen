@@ -1,10 +1,13 @@
 package fwg.config;
 
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import java.io.File;
+
+import net.minecraft.launchwrapper.Launch;
 import net.minecraftforge.common.config.Configuration;
 
 public class ConfigFWG
 {
+	private static final File CONFIG_FILE = new File(Launch.minecraftHome, "config/fwg.cfg");
 	public static Configuration config;
 	public static int[] biomeIDs = new int[3];
 	
@@ -16,9 +19,9 @@ public class ConfigFWG
 	public static boolean oneBiomePerSmallRegion;
 	public static float smallRegionProbability;
 	
-	public static void init(FMLPreInitializationEvent event)
+	public static void load()
 	{
-		config = new Configuration(event.getSuggestedConfigurationFile());
+		config = new Configuration(CONFIG_FILE);
 		
 		for(int c = 0; c < biomeIDs.length; c++)
 		{

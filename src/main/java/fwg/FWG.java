@@ -8,6 +8,7 @@ import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.event.FMLServerAboutToStartEvent;
 import fwg.biomes.BiomeList;
 import fwg.config.ConfigFWG;
 import fwg.data.Planets;
@@ -28,7 +29,7 @@ public class FWG
 	{
 		instance = this;
 		
-		ConfigFWG.init(event);
+		ConfigFWG.load();
 		BiomeList.init();
 	}
 	
@@ -44,4 +45,9 @@ public class FWG
 		Support.init();
 		Planets.init();
 	}
+	
+	@EventHandler
+    public void onServerAboutToStart(FMLServerAboutToStartEvent event) {
+        ConfigFWG.load();
+    }
 }
