@@ -17,6 +17,7 @@ import net.minecraft.world.gen.layer.IntCache;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.BiomeDictionary.Type;
 import net.minecraftforge.common.BiomeManager;
+import static fwg.config.ConfigFWG.*;
 
 public class ManagerFWG extends WorldChunkManager
 {
@@ -224,39 +225,43 @@ public class ManagerFWG extends WorldChunkManager
 			{
 				offX = perlin.noise2((par1 + j11) / 30F, (par2 + k11) / 30F) * 80 + perlin.noise2((par1 + j11) / 7F, (par2 + k11) / 7F) * 20;
 				offY = perlin.noise2((par1 + j11 + 1000) / 30F, (par2 + k11) / 30F) * 80 + perlin.noise2((par1 + j11 - 1000) / 7F, (par2 + k11) / 7F) * 20;
-				c = (biomecell.noise((par1 + j11 + offX + 1000) / 330D, (par2 + k11 - offY) / 330D, 1D) * 0.5f) + 0.5f;
+				c = (biomecell.noise((par1 + j11 + offX + 1000) / biomeScaleTemperatureRegion, (par2 + k11 - offY) / biomeScaleTemperatureRegion, 1D) * 0.5f) + 0.5f;
 				
-				if(isSmallEnabled && (biomecell.noise(par1 / 140D, par2 / 140D, 1D) * 0.5f) + 0.5f > 0.92f)
+				if(isSmallEnabled && (biomecell.noise(par1 / biomeScaleSmallRegion, par2 / biomeScaleSmallRegion, 1D) * 0.5f) + 0.5f > (1 - smallRegionProbability))
 				{
-					h = (biomecell.noise((par1 + j11 + offX + 2000) / 50D, (par2 + k11 - offY) / 50D, 1D) * 0.5f) + 0.5f;
+					if(!oneBiomePerSmallRegion) {
+						h = (biomecell.noise((par1 + j11 + offX + 2000) / biomeScale, (par2 + k11 - offY) / biomeScale, 1D) * 0.5f) + 0.5f;
+					} else {
+						h = c;
+					}
 					h = h < 0f ? 0f : h >= 0.9999999f ? 0.9999999f : h;
 					h *= biomeListSmallLength;
 					abiomegenbase[i2++] = biomeList_small.get((int)(h)).biomeID;
 				}
 				else if(c < 0.25f)
 				{
-					h = (biomecell.noise((par1 + j11 + offX + 2000) / 90D, (par2 + k11 - offY) / 90D, 1D) * 0.5f) + 0.5f;
+					h = (biomecell.noise((par1 + j11 + offX + 2000) / biomeScale, (par2 + k11 - offY) / biomeScale, 1D) * 0.5f) + 0.5f;
 					h = h < 0f ? 0f : h >= 0.9999999f ? 0.9999999f : h;
 					h *= biomeListSnowLength;
 					abiomegenbase[i2++] = biomeList_snow.get((int)(h)).biomeID;
 				}
 				else if(c < 0.5f)
 				{
-					h = (biomecell.noise((par1 + j11 + offX + 3000) / 90D, (par2 + k11 - offY) / 90D, 1D) * 0.5f) + 0.5f;
+					h = (biomecell.noise((par1 + j11 + offX + 3000) / biomeScale, (par2 + k11 - offY) / biomeScale, 1D) * 0.5f) + 0.5f;
 					h = h < 0f ? 0f : h >= 0.9999999f ? 0.9999999f : h;
 					h *= biomeListColdLength;
 					abiomegenbase[i2++] = biomeList_cold.get((int)(h)).biomeID;
 				}
 				else if(c < 0.75f)
 				{
-					h = (biomecell.noise((par1 + j11 + offX + 4000) / 90D, (par2 + k11 - offY) / 90D, 1D) * 0.5f) + 0.5f;
+					h = (biomecell.noise((par1 + j11 + offX + 4000) / 90D / biomeScale, (par2 + k11 - offY) / 90D / biomeScale, 1D) * 0.5f) + 0.5f;
 					h = h < 0f ? 0f : h >= 0.9999999f ? 0.9999999f : h;
 					h *= biomeListHotLength;
 					abiomegenbase[i2++] = biomeList_hot.get((int)(h)).biomeID;
 				}
 				else
 				{
-					h = (biomecell.noise((par1 + j11 + offX + 5000) / 90D, (par2 + k11 - offY) / 90D, 1D) * 0.5f) + 0.5f;
+					h = (biomecell.noise((par1 + j11 + offX + 5000) / 90D / biomeScale, (par2 + k11 - offY) / 90D / biomeScale, 1D) * 0.5f) + 0.5f;
 					h = h < 0f ? 0f : h >= 0.9999999f ? 0.9999999f : h;
 					h *= biomeListWetLength;
 					abiomegenbase[i2++] = biomeList_wet.get((int)(h)).biomeID;
