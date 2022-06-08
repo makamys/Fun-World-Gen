@@ -31,7 +31,8 @@ import java.util.Random;
  * It was modified to work in a similar way to the bukkit noise generators, and to support
  * octaves and 2d noise, 
  * 
- * by mncat77 and jtjj222. <----------  
+ * by mncat77 and jtjj222. <----------
+ * optimized by makamys  
  */
 public class CellNoise 
 {
@@ -119,13 +120,15 @@ public class CellNoise
 		double xCandidate = 0;
 		double zCandidate = 0;
 
+		long seed2 = new Random(seed).nextLong();
+		
 		for(int zCur = zInt - 2; zCur <= zInt + 2; zCur++) 
 		{
 			for(int xCur = xInt - 2; xCur <= xInt + 2; xCur++) 
 			{
 
 				double xPos = xCur + valueNoise2D(xCur, zCur, seed);
-				double zPos = zCur + valueNoise2D(xCur, zCur, new Random(seed).nextLong());
+				double zPos = zCur + valueNoise2D(xCur, zCur, seed2);
 				double xDist = xPos - x;
 				double zDist = zPos - z;
 				double dist = xDist * xDist + zDist * zDist;
